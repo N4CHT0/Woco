@@ -1,9 +1,10 @@
-import {StyleSheet, Text, View, ScrollView, FlatList, Animated} from 'react-native';
+import {StyleSheet, Text, View, ScrollView, FlatList, Animated,TouchableWithoutFeedback} from 'react-native';
 import React, {useRef} from 'react';
 import {BlogList} from '../../../data';
 import {ItemSmall} from '../../components'; 
 import {SearchNormal1} from 'iconsax-react-native';
 import { fontType, colors } from '../../theme';
+import { useNavigation } from "@react-navigation/native";
 
 const data = [
   {id: 1, label: 'react'},
@@ -46,15 +47,18 @@ const recentY = diffClampY.interpolate({
   });
 
 const Discover = () => {
+  const navigation = useNavigation();
   const recentBlog = BlogList.slice(5);
   return (
     <View style={styles.container}>
-      <View style={styles.header}>
-        <View style={styles.bar}>
-          <SearchNormal1 size={18} color={colors.grey(0.5)} variant="Linear" />
-          <Text style={styles.placeholder}>Search</Text>
+      <TouchableWithoutFeedback onPress={() => navigation.navigate("SearchPage")}>
+        <View style={styles.header}>
+          <View style={styles.bar}>
+            <SearchNormal1 size={18} color={colors.grey(0.5)} variant="Linear" />
+            <Text style={styles.placeholder}>Search</Text>
+          </View>
         </View>
-      </View>
+      </TouchableWithoutFeedback>
       <Animated.View style={[recent.container, {transform: [{translateY: recentY}]}]}>
           <Text style={recent.text}>Recent Search</Text>
           <FlatListRecent />
@@ -120,7 +124,7 @@ const recent = StyleSheet.create({
   container:{
     position: 'absolute',
     backgroundColor: colors.white(),
-    zIndex: 1000,
+    zIndex: 999,
     top: 52,
     left: 0,
     right: 0,
